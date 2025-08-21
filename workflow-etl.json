@@ -1,0 +1,361 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "47a75a19-82c6-4608-bbcc-9650d684549f",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1OjisMsyH_xSJPmFq43mbC-_IX-w02VjAiUkea6-ovcw/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "RECURSOS HUMANOS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OjisMsyH_xSJPmFq43mbC-_IX-w02VjAiUkea6-ovcw/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "A1:E7"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        160
+      ],
+      "id": "acc0d02c-ebb6-4047-a3c6-7dca0c7a1528",
+      "name": "Get row(s) in RH",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "W30o9jOorKV6g0yF",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1UNROt8uGtCsr1TIsSJ8hC1ZVDQ_4_pXnVzg4mlLPasA",
+          "mode": "list",
+          "cachedResultName": "AGENDA MARKETING",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UNROt8uGtCsr1TIsSJ8hC1ZVDQ_4_pXnVzg4mlLPasA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "MKT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UNROt8uGtCsr1TIsSJ8hC1ZVDQ_4_pXnVzg4mlLPasA/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "A1:D9"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        -160
+      ],
+      "id": "e4a7cb81-76ed-4d95-8bf2-017e248c7746",
+      "name": "Get row(s) in MK",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "W30o9jOorKV6g0yF",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1KeEF47VXCXO-eZpxhFG8Ye3gNRG3qwUSjES2kZ-_Xeo",
+          "mode": "list",
+          "cachedResultName": "Agenda Ia",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KeEF47VXCXO-eZpxhFG8Ye3gNRG3qwUSjES2kZ-_Xeo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Agenda IA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KeEF47VXCXO-eZpxhFG8Ye3gNRG3qwUSjES2kZ-_Xeo/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "A:F"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        0
+      ],
+      "id": "5e849656-69cf-4286-92cb-3d49436d9c64",
+      "name": "Get row(s) in IA",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "W30o9jOorKV6g0yF",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        512,
+        -16
+      ],
+      "id": "1da4ba99-883b-42da-853a-131d4a671cbd",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fc59fa68-bbd0-4734-a0ea-4ac48ba78ee2",
+              "leftValue": "={{ $json.evento }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        656,
+        0
+      ],
+      "id": "7e5599bf-27c7-42fb-bd24-5d9416b896f3",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ce7c4079b915.ngrok-free.app/eventos/",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        816,
+        0
+      ],
+      "id": "21417ac0-cd09-4142-89dd-4efe21b00275",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst newItems = [];\n\nfunction parseAndFormatDate(dateStr) {\n  if (!dateStr || typeof dateStr !== 'string') return null;\n  \n  const parts = dateStr.split('/');\n  if (parts.length !== 3) return null;\n\n  const day = parseInt(parts[0], 10);\n  const month = parseInt(parts[1], 10) - 1;\n  const year = parseInt(parts[2], 10);\n\n  const date = new Date(year, month, day);\n\n  if (isNaN(date.getTime()) || date.getDate() !== day || date.getMonth() !== month || date.getFullYear() !== year) {\n    return null;\n  }\n\n  const formattedYear = date.getFullYear();\n  const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0');\n  const formattedDay = date.getDate().toString().padStart(2, '0');\n\n  return `${formattedYear}-${formattedMonth}-${formattedDay}`;\n}\n\nfor (const item of items) {\n  const json = item.json;\n\n  let data_inicio = null;\n  let data_fim = null;\n\n  const rawDateString = json[\"Data/Anual\"];\n  const dateString = rawDateString ? rawDateString.split('(')[0].trim() : null;\n\n  if (dateString && typeof dateString === 'string') {\n    const dates = dateString.split('à');\n    const startDateRaw = dates[0] ? dates[0].trim() : null;\n    const endDateRaw = dates.length > 1 && dates[1] ? dates[1].trim() : startDateRaw;\n\n    if (startDateRaw) {\n      data_inicio = parseAndFormatDate(startDateRaw);\n    }\n\n    if (endDateRaw) {\n      data_fim = parseAndFormatDate(endDateRaw);\n    }\n  }\n\n  const output = {\n    evento: json.Evento,\n    descricao: json.Descrição,\n    responsavel: json.Responsável,\n    categoria: 'Marketing',\n    data_inicio: data_inicio,\n    data_fim: data_fim\n  };\n  \n  newItems.push({ json: output });\n}\n\nreturn newItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        -160
+      ],
+      "id": "bc028717-58b5-4419-8b64-41dd0a12f9fc",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst newItems = [];\n\nfunction parseAndFormatDate(dateStr) {\n  if (!dateStr || typeof dateStr !== 'string') return null;\n  \n  const parts = dateStr.split('/');\n  if (parts.length !== 3) return null;\n\n  const day = parseInt(parts[0], 10);\n  const month = parseInt(parts[1], 10) - 1;\n  const year = parseInt(parts[2], 10);\n\n  const date = new Date(year, month, day);\n\n  if (isNaN(date.getTime()) || date.getDate() !== day || date.getMonth() !== month || date.getFullYear() !== year) {\n    return null;\n  }\n\n  const formattedYear = date.getFullYear();\n  const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0');\n  const formattedDay = date.getDate().toString().padStart(2, '0');\n\n  return `${formattedYear}-${formattedMonth}-${formattedDay}`;\n}\n\nfor (const item of items) {\n  const json = item.json;\n\n  let data_inicio = null;\n  let data_fim = null;\n\n  const rawDateString = json[\"Data/Anual\"];\n  const dateString = rawDateString ? rawDateString.split('(')[0].trim() : null;\n\n  if (dateString && typeof dateString === 'string') {\n    const dates = dateString.split('à');\n    const startDateRaw = dates[0] ? dates[0].trim() : null;\n    const endDateRaw = dates.length > 1 && dates[1] ? dates[1].trim() : startDateRaw;\n\n    if (startDateRaw) {\n      data_inicio = parseAndFormatDate(startDateRaw);\n    }\n\n    if (endDateRaw) {\n      data_fim = parseAndFormatDate(endDateRaw);\n    }\n  }\n\n  const output = {\n    evento: json.Evento,\n    descricao: json.Descrição,\n    responsavel: json.Responsável,\n    categoria: 'IA',\n    data_inicio: data_inicio,\n    data_fim: data_fim\n  };\n  \n  newItems.push({ json: output });\n}\n\nreturn newItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        0
+      ],
+      "id": "710b8695-c846-4f6c-8f08-14bba68325e0",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst newItems = [];\n\nfunction parseAndFormatDate(dateStr) {\n  if (!dateStr || typeof dateStr !== 'string') return null;\n  \n  const parts = dateStr.split('/');\n  if (parts.length !== 3) return null;\n\n  const day = parseInt(parts[0], 10);\n  const month = parseInt(parts[1], 10) - 1;\n  const year = parseInt(parts[2], 10);\n\n  const date = new Date(year, month, day);\n\n  if (isNaN(date.getTime()) || date.getDate() !== day || date.getMonth() !== month || date.getFullYear() !== year) {\n    return null;\n  }\n\n  const formattedYear = date.getFullYear();\n  const formattedMonth = (date.getMonth() + 1).toString().padStart(2, '0');\n  const formattedDay = date.getDate().toString().padStart(2, '0');\n\n  return `${formattedYear}-${formattedMonth}-${formattedDay}`;\n}\n\nfor (const item of items) {\n  const json = item.json;\n\n  let data_inicio = null;\n  let data_fim = null;\n\n  const rawDateString = json[\"Data/Anual\"];\n  const dateString = rawDateString ? rawDateString.split('(')[0].trim() : null;\n\n  if (dateString && typeof dateString === 'string') {\n    const dates = dateString.split('à');\n    const startDateRaw = dates[0] ? dates[0].trim() : null;\n    const endDateRaw = dates.length > 1 && dates[1] ? dates[1].trim() : startDateRaw;\n\n    if (startDateRaw) {\n      data_inicio = parseAndFormatDate(startDateRaw);\n    }\n\n    if (endDateRaw) {\n      data_fim = parseAndFormatDate(endDateRaw);\n    }\n  }\n\n  const output = {\n    evento: json.Evento,\n    descricao: json.Descrição,\n    responsavel: json.Responsável,\n    categoria: 'RH',\n    data_inicio: data_inicio,\n    data_fim: data_fim\n  };\n  \n  newItems.push({ json: output });\n}\n\nreturn newItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        160
+      ],
+      "id": "b99c75a0-603c-47cb-a736-783d6890e757",
+      "name": "Code2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in IA",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in MK",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in RH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in IA": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in MK": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in RH": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7c9e0d98-f4f5-4486-a4da-e13707e5ec99",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "25231f7ca2b04a0ca757553a55aeb3a4c1681699561a980aecc317afdeb85f6a"
+  },
+  "id": "7gEDNzzLJr47sdyk",
+  "tags": []
+}
