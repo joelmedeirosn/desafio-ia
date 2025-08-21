@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: agendadb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: ./api # indica para construir a imagem a partir do Dockerfile na pasta ./api
+    container_name: fastapi_api
+    restart: always
+    ports:
+      - "8000:8000" # expõe a porta da API para a sua máquina
+    depends_on:
+      - db # garante que o banco de dados inicie antes da API
+
+volumes:
+  postgres_data:
