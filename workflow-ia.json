@@ -1,5 +1,5 @@
 {
-  "name": "My workflow 2",
+  "name": "workflow-ia",
   "nodes": [
     {
       "parameters": {
@@ -11,7 +11,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        176,
+        32,
         0
       ],
       "id": "a825fc24-74a4-425c-9f96-8c35b18312d3",
@@ -21,13 +21,13 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Sua tarefa é extrair o nome de um evento de um texto. Responda apenas com o nome do evento em formato JSON. Se nenhum nome de evento for encontrado, responda com {\"nome_do_evento\": \"nenhum\"}.\n\nExemplo 1:\nTexto: \"Qual o período do evento Wiki Facilit?\"\nResposta: {\"nome_do_evento\": \"Wiki Facilit\"}\n\nExemplo 2:\nTexto: \"me fale sobre a Análise de Desempenho\"\nResposta: {\"nome_do_evento\": \"Análise de Desempenho\"}\n\nExemplo 3:\nTexto: \"que dia é hoje?\"\nResposta: {\"nome_do_evento\": \"nenhum\"}\n\nTexto do usuário: {{ $json.body.pergunta }}",
+        "text": "=Sua tarefa é analisar o texto do usuário e extrair o nome de um evento da empresa Facilit.\n\n- Se a pergunta for sobre eventos, agendas ou cronogramas, responda com o nome do evento em formato JSON.\n- Se a pergunta for sobre qualquer outro assunto (exemplos: \"qual a capital do Brasil?\", \"quanto é 5+5?\", \"quem é você?\"), responda com {\"nome_do_evento\": \"fora_de_escopo\"}.\n- Se a pergunta for sobre um evento mas não for claro qual, responda com {\"nome_do_evento\": \"desconhecido\"}.\n\nExemplo 1:\nTexto: \"Qual o período do evento Wiki Facilit?\"\nResposta: {\"nome_do_evento\": \"Wiki Facilit\"}\n\nExemplo 2:\nTexto: \"Qual a previsão do tempo para amanhã?\"\nResposta: {\"nome_do_evento\": \"fora_de_escopo\"}\n\nTexto do usuário: {{ $json.body.pergunta }}",
         "batching": {}
       },
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.7,
       "position": [
-        352,
+        192,
         0
       ],
       "id": "7ce6f3c2-004f-4d56-87f5-1d70efb1c870",
@@ -47,7 +47,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        352,
+        192,
         176
       ],
       "id": "3501b5f9-d58b-49b5-98d5-bf5f4448be65",
@@ -214,6 +214,62 @@
       ],
       "id": "ac6031fe-6c92-469a-ad92-83be342fe73f",
       "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3f493820-5070-4731-b1b8-fd9b57338886",
+              "leftValue": "={{ $json.text.includes('fora_de_escopo') }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        0
+      ],
+      "id": "7aff4dac-2001-4776-84eb-4e28ce0c6a1c",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2b116db2-9b96-4d4f-b5c0-2d0ed0b308eb",
+              "name": "resposta",
+              "value": "Desculpe, como um assistente de BI da Facilit, só posso responder a perguntas sobre os eventos e agendas da empresa.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        576,
+        304
+      ],
+      "id": "cbf1083b-5d8d-457a-ba22-435fb88edfa6",
+      "name": "Edit Fields2"
     }
   ],
   "pinData": {},
@@ -244,7 +300,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "If1",
             "type": "main",
             "index": 0
           }
@@ -323,13 +379,42 @@
           }
         ]
       ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "e69b64f6-7d04-4e79-b954-db52a3a68dbe",
+  "versionId": "6300e29b-2aff-4101-a708-10c2490ebdb6",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "25231f7ca2b04a0ca757553a55aeb3a4c1681699561a980aecc317afdeb85f6a"

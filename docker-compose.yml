@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:13
@@ -16,13 +14,13 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   api:
-    build: ./api # indica para construir a imagem a partir do Dockerfile na pasta ./api
+    build: ./api
     container_name: fastapi_api
     restart: always
     ports:
-      - "8000:8000" # expõe a porta da API para a sua máquina
+      - "8000:8000"
     depends_on:
-      - db # garante que o banco de dados inicie antes da API
+      - db
 
 volumes:
   postgres_data:
