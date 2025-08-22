@@ -1,0 +1,339 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "6f93a43c-968c-4feb-8f6e-c899e4fb6efd",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        176,
+        0
+      ],
+      "id": "a825fc24-74a4-425c-9f96-8c35b18312d3",
+      "name": "Webhook",
+      "webhookId": "6f93a43c-968c-4feb-8f6e-c899e4fb6efd"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Sua tarefa é extrair o nome de um evento de um texto. Responda apenas com o nome do evento em formato JSON. Se nenhum nome de evento for encontrado, responda com {\"nome_do_evento\": \"nenhum\"}.\n\nExemplo 1:\nTexto: \"Qual o período do evento Wiki Facilit?\"\nResposta: {\"nome_do_evento\": \"Wiki Facilit\"}\n\nExemplo 2:\nTexto: \"me fale sobre a Análise de Desempenho\"\nResposta: {\"nome_do_evento\": \"Análise de Desempenho\"}\n\nExemplo 3:\nTexto: \"que dia é hoje?\"\nResposta: {\"nome_do_evento\": \"nenhum\"}\n\nTexto do usuário: {{ $json.body.pergunta }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        352,
+        0
+      ],
+      "id": "7ce6f3c2-004f-4d56-87f5-1d70efb1c870",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {
+          "responseFormat": "json_object"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        352,
+        176
+      ],
+      "id": "3501b5f9-d58b-49b5-98d5-bf5f4448be65",
+      "name": "OpenAI Chat Model",
+      "notesInFlow": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "OEHBVR0sb8wLmBAG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://ce7c4079b915.ngrok-free.app/eventos/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "evento",
+              "value": "={{ $json.nome_do_evento.trim() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        656,
+        0
+      ],
+      "id": "71f3f03e-6a4d-4395-bf66-ebd0ca3deabd",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um assistente prestativo. Sua tarefa é responder à pergunta do usuário com base nos dados em formato JSON encontrados no banco de dados.\n\nPergunta do Usuário:\n{{ $nodes.Webhook.json.body.pergunta }}\n\nDados Encontrados (em formato JSON):\n{{ JSON.stringify($json) }}\n\nInstruções:\n1. Olhe a \"Pergunta do Usuário\".\n2. Encontre a resposta dentro do JSON em \"Dados Encontrados\".\n3. Formule uma resposta curta e direta em português.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        976,
+        0
+      ],
+      "id": "dd6f6cee-6661-4953-b9d8-cf92ff16b673",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        976,
+        176
+      ],
+      "id": "3bc10dcd-529d-4628-a926-701469e90584",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "OEHBVR0sb8wLmBAG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2a30efc7-3a22-4b60-97e5-5facb09c3511",
+              "name": "resposta",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        0
+      ],
+      "id": "52d35e5a-dfea-4340-ba6b-7994e038af85",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1520,
+        0
+      ],
+      "id": "2d56e99d-fa54-40f8-8dad-eb57354198b1",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "652c7077-8d1d-45ff-8aa4-07f6ec9608c8",
+              "leftValue": "={{ $json.evento }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        0
+      ],
+      "id": "14e7c13f-e1e5-44b8-a9c5-682ea289bc83",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f481e12b-fc2c-48ec-a714-8036e3c7a27d",
+              "name": "resposta",
+              "value": "Desculpe, não encontrei informações sobre o evento solicitado. Poderia tentar um nome diferente?",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        304
+      ],
+      "id": "ac6031fe-6c92-469a-ad92-83be342fe73f",
+      "name": "Edit Fields1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e69b64f6-7d04-4e79-b954-db52a3a68dbe",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "25231f7ca2b04a0ca757553a55aeb3a4c1681699561a980aecc317afdeb85f6a"
+  },
+  "id": "rOUjFsjBkWnYlHUQ",
+  "tags": []
+}
