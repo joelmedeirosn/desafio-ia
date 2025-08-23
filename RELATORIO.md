@@ -135,5 +135,19 @@ Durante o desenvolvimento, diversas dificuldades foram encontradas, servindo com
 * **Ponto Extra: Tentativa de Dockerizar o n8n:**
     * Foi feita uma tentativa de cumprir o ponto extra de rodar o n8n localmente via Docker Compose. Embora a configuração do `docker-compose.yml` tenha sido bem-sucedida, o processo de criar credenciais do Google para um ambiente local (`localhost`) se mostrou excessivamente complexo e burocrático, envolvendo a configuração detalhada de um projeto no Google Cloud Platform, e problemas particulares com minhas credenciais, que levariam um tempo além do prazo do desafio para serem resolvidos.
     * Foi tomada a decisão estratégica de reverter para a arquitetura com o n8n Cloud e ngrok para garantir a funcionalidade completa do projeto dentro do prazo, documentando a tentativa como um aprendizado.
-    * 
+---
+
+## 5. Uso de Inteligência Artificial no Desafio
+
+Conforme a política de transparência do desafio, este projeto foi desenvolvido com o auxílio da Inteligência Artificial Gemini (Google). A colaboração com a IA foi utilizada como uma ferramenta de desenvolvimento assistido, para aprendizado durante o processo.
+
+O uso da IA pode ser detalhado nos seguintes pontos:
+
+* **Guia e Estruturação:** A IA foi utilizada para obter um passo a passo em pontos específicos que geraram mais dúvida durante o desafio.
+* **Aprendizado de Ferramentas:** A interação serviu como uma ferramenta de aprendizado para aprofundar o conhecimento em tecnologias que não eram de domínio prévio, como o n8n, a criação de credenciais no Google Cloud Platform e as melhores práticas de depuração de workflows.
+* **Depuração (Debugging):** A IA foi crucial no processo para diagnosticar e resolver uma série de problemas complexos, como erros de API (`404` e `422`), particularidades do ambiente n8n e a formatação de dados.
+* **Geração e Refinamento de Código:** Foram solicitados snippets de código para a API em FastAPI, scripts SQL e, principalmente, expressões e código JavaScript customizado para os nós do n8n.
+
+A IA foi empregada como uma parceira de desenvolvimento, permitindo um foco maior na lógica da solução e na superação dos desafios técnicos.
+
 ---
